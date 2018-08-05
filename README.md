@@ -25,8 +25,8 @@ $ npm run start:echo
 * This will start up the `client` and the `API`.
 * Open the client on browser: `http://localhost:1234/`
 * Type and send message, in browser console must appear:
-    - `/languages#79PVp22K8iHx6tTCAAAA` This identifies the socket.io namespace and socket id 
-    - `{channel: "languages", user: "pepe", text: "your text..."}` The message that we sent to server, and it's sending back to us. Just an echo.
+    - `/random-channel#79PVp22K8iHx6tTCAAAA` This identifies the socket.io namespace and socket id 
+    - `{channel: "random-channel", user: "pepe", text: "your text..."}` The message that we sent to server, and it's sending back to us. Just an echo.
 
 ### To test `API` with `client`, we need to open two separate node processes. First we have to run the server, from root folder:
 
