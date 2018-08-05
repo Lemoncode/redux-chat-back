@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "parcel index.html"
+    "start:echo": "node ../src/app.js | parcel index.html",
+    "start:client": "parcel index.html"
   },
   "author": "Jaime Salas",
   "license": "MIT",
