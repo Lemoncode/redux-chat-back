@@ -1,0 +1,19 @@
+{
+  "name": "socket_example_client",
+  "version": "1.0.0",
+  "description": "Test that environment works",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:echo": "node ../src/app.js | parcel index.html",
+    "start:client": "parcel index.html"
+  },
+  "author": "Jaime Salas",
+  "license": "MIT",
+  "devDependencies": {
+    "parcel": "^1.9.7"
+  },
+  "dependencies": {
+    "socket.io": "^2.1.1"
+  }
+}
