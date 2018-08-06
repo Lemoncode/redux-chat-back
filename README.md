@@ -14,6 +14,15 @@
 $ npm start
 ```
 
+## Unit Testing
+
+* To run unit tests from root folder:
+
+```bash
+$ npm test
+```
+
+
 ## Funtcional Test API
 
 ### To test `echo` with server, from `e2e` as root folder run:
