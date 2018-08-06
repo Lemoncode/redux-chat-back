@@ -12,15 +12,15 @@ exports.channelList = () => (
     Promise.resolve(Object.keys(channels))
 );
 
-exports.existChannel = (channelKey) => {
-    return new Promise((resolve, _) => {
+exports.existChannel = (channelKey) => (
+    new Promise((resolve, _) => {
         exports.channelList().then((channelList) => {
             resolve(
                 !!channelList.find(c => c === channelKey)
             );
         });
-    });
-};
+    })
+);
 
 exports.createChannel = async (channelKey) => {
     const channelExist = await exports.existChannel(channelKey);
