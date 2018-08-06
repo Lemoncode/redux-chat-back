@@ -3,6 +3,7 @@ const channelRepository = require('../src/repositories/channelRepository');
 // TODO: Add mocha, chai, sinon.
 
 const channelListHasElements = async () => {
+    await channelRepository.createChannel('foo');
     const channelList = await channelRepository.channelList();
     assert.equal(channelList.length > 0, true);
     console.log('pass channelListHasElements');
