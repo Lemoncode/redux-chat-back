@@ -66,9 +66,9 @@ const canAddMessage = async (channelKey, userId) => (
 );
 
 exports.addMessage = async ({ channelKey, userId, text }) => {
-    const canAddMessageResolve = await canAddMessage(channelKey, userId)
+    const canAddMessageResolved = await canAddMessage(channelKey, userId)
     return new Promise((resolve, reject) => {
-        if (canAddMessageResolve) {
+        if (canAddMessageResolved) {
             channels[channelKey].messages = [
                 ...channels[channelKey].messages,
                 new Message(userId, text, Date.now())
