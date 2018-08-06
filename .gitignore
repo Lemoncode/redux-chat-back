@@ -4,3 +4,6 @@ node_modules/
 # parcel-bundler cache (https://parceljs.org/)
 .cache
 dist/
+
+# IDE
+.vscode
