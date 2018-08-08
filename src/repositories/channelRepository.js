@@ -1,79 +1,74 @@
 const Message = require('../models/Message');
+const { isNotDefineOrWhiteSpace } = require('../helpers');
+
 const channels = [];
 
-channels['random'] = {
-    users: [],
-    messages: [],
+const createChannel = (channelKey) => {
+    channels[channelKey] = {
+        users: [],
+        messages: [],
+    };
 };
 
-channels['languages'] = {
-    users: [],
-    messages: [],
-};
+exports.channelList = () => (
+    Promise.resolve(Object.keys(channels))
+);
 
-exports.channelList = () => {
-    return Promise.resolve(Object.keys(channels));
-};
-
-exports.existChannel = (channelKey) => {
-    return new Promise((res, _) => {
+exports.existChannel = (channelKey) => (
+    new Promise((resolve, _) => {
         exports.channelList().then((channelList) => {
-            const found = channelList.find(c => c === channelKey);
-            if (found) {
-                res(true);
-            } else {
-                res(false);
-            }
+            resolve(
+                !!channelList.find(c => c === channelKey)
+            );
         });
-    });
-};
+    })
+);
 
-exports.createChannel = (channelKey) => {
-    return new Promise((res, rej) => {
-        exports.channelList()
-            .then((channelList) => {
-                if (!channelList.find(c => c === channelKey)) {
-                    channels[channelKey] = {
-                        users: [],
-                        messages: [],
-                    };
-                    res();
-                }
-                rej(`Channel ${channelKey} already exist.`);
-            })
+exports.createChannel = async (channelKey) => {
+    const channelExist = await exports.existChannel(channelKey);
+    return new Promise((resolve, reject) => {
+        if (isNotDefineOrWhiteSpace(channelKey)) {
+            reject('No value for channelKey.');
+        }
+        if (channelExist) {
+            reject(`Channel ${channelKey} already exist.`);
+        }
+        createChannel(channelKey);
+        resolve();
     });
 };
 
 exports.existUser = async (channelKey, userId) => {
     const existChannel = await exports.existChannel(channelKey);
-    return new Promise((res, rej) => {
+    return new Promise((resolve, reject) => {
         if (!existChannel) {
-            rej(`${channelKey} does not exist.`);
-        }
-
-        const found = channels[channelKey].users.find(u => u === userId);
-        if (found) {
-            res(true);
-        } else {
-            res(false);
-        }
+            reject(`${channelKey} does not exist.`);
+        };
+        resolve(
+            !!channels[channelKey].users.find(u => u === userId)
+        );
     });
 };
 
 exports.addUser = async (channelKey, userId) => {
     const existChannel = await exports.existChannel(channelKey);
-    return new Promise((res, rej) => {
-        if (!existChannel) {
-            rej(`${channelKey} does not exist.`);
+    const existUser = await exports.existUser(channelKey, userId);
+    return new Promise((resolve, reject) => {
+        if (
+            isNotDefineOrWhiteSpace(channelKey) ||
+            isNotDefineOrWhiteSpace(userId)
+        ) {
+            reject('No value for channelKey or userId');
         }
-        exports.existUser(channelKey, userId)
-            .then((exists) => {
-                if (!exists) {
-                    channels[channelKey].users = [...channels[channelKey].users, userId];
-                    res();
-                }
-                rej(`${userId} already exists in this channel.`);
-            });
+
+        if (!existChannel) {
+            reject(`${channelKey} does not exist.`);
+        }
+        if (!existUser) {
+            channels[channelKey].users = [...channels[channelKey].users, userId];
+            resolve();
+        }
+        reject(`${userId} already exists in this channel.`);
     });
 };
 
@@ -82,23 +77,26 @@ const canAddMessage = async (channelKey, userId) => (
     await exports.existUser(channelKey, userId)
 );
 
-exports.addMessage = ({ channelKey, userId, text }) => {
-    return new Promise(async (res, rej) => {
-        if (await canAddMessage(channelKey, userId)) {
-            const message = new Message(userId, text, Date.now());
-            channels[channelKey].messages = [...channels[channelKey].messages, message];
-            res();
+exports.addMessage = async ({ channelKey, userId, text }) => {
+    const canAddMessageResolved = await canAddMessage(channelKey, userId)
+    return new Promise((resolve, reject) => {
+        if (canAddMessageResolved) {
+            channels[channelKey].messages = [
+                ...channels[channelKey].messages,
+                new Message(userId, text, Date.now())
+            ];
+            resolve();
         }
-        rej(`Channel: ${channelKey} or User: ${userId} does not exist.`);
+        reject(`Channel: ${channelKey} or User: ${userId} does not exist.`);
     });
 };
 
 exports.getMessages = async (channelKey) => {
     const existChannel = await exports.existChannel(channelKey);
-    return new Promise((res, rej) => {
+    return new Promise((resolve, reject) => {
         if (existChannel) {
-            res(channels[channelKey].messages);
+            resolve(channels[channelKey].messages);
         }
-        rej(`${channelKey} does not exist.`);
+        reject(`${channelKey} does not exist.`);
     });
 };

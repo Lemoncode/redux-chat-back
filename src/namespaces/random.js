@@ -1,5 +1,5 @@
 module.exports = (io) => {
-    const languages = io.of('/languages');
+    const languages = io.of('/random-channel');
 
     languages.on('connection', (socket) => {
         console.log('connection added');

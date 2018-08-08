@@ -14,7 +14,7 @@ const messageFactory = (channel, user) => ({
 const clearElement = element => element.value = '';
 
 document.addEventListener('DOMContentLoaded', () => {
-    const socket = createSocket('http://localhost:3000', 'languages');
+    const socket = createSocket('http://localhost:3000', 'random-channel');
     socket.on('connect', () => console.log(socket.id));
     socket.on('error', (err) => console.log(err));
     // TODO: Listen messages from server.
@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log(msg);
     });
 
-    const _messageFactory = messageFactory('languages', 'pepe');
+    const _messageFactory = messageFactory('random-channel', 'pepe');
     const sendbutton = document.getElementById('sendbutton');
     sendbutton.addEventListener('click', (evt) => {
         evt.stopPropagation();
