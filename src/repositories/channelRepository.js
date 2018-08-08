@@ -1,4 +1,6 @@
 const Message = require('../models/Message');
+const { isNotDefineOrWhiteSpace } = require('../helpers');
+
 const channels = [];
 
 const createChannel = (channelKey) => {
@@ -25,11 +27,14 @@ exports.existChannel = (channelKey) => (
 exports.createChannel = async (channelKey) => {
     const channelExist = await exports.existChannel(channelKey);
     return new Promise((resolve, reject) => {
-        if (!channelExist) {
-            createChannel(channelKey);
-            resolve();
+        if (isNotDefineOrWhiteSpace(channelKey)) {
+            reject('No value for channelKey.');
         }
-        reject(`Channel ${channelKey} already exist.`);
+        if (channelExist) {
+            reject(`Channel ${channelKey} already exist.`);
+        }
+        createChannel(channelKey);
+        resolve();
     });
 };
 
@@ -49,6 +54,13 @@ exports.addUser = async (channelKey, userId) => {
     const existChannel = await exports.existChannel(channelKey);
     const existUser = await exports.existUser(channelKey, userId);
     return new Promise((resolve, reject) => {
+        if (
+            isNotDefineOrWhiteSpace(channelKey) ||
+            isNotDefineOrWhiteSpace(userId)
+        ) {
+            reject('No value for channelKey or userId');
+        }
+
         if (!existChannel) {
             reject(`${channelKey} does not exist.`);
         }

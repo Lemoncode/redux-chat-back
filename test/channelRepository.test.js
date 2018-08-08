@@ -1,7 +1,52 @@
 const expect = require('chai').expect;
+
 const channelRepository = require('../src/repositories/channelRepository');
 
 describe('channelRepository', () => {
+    describe('adding new channel with empty channelKey', () => {
+        it('should avoid add channel', async () => {
+            const channelKey = '';
+            try {
+                await channelRepository.createChannel(channelKey);
+            } catch (error) {
+                expect(error).equals('No value for channelKey.');
+            }
+        });
+    });
+
+    describe('adding new channel with null channelKey', () => {
+        it('should avoid add channel', async () => {
+            const channelKey = null;
+            try {
+                await channelRepository.createChannel(channelKey);
+            } catch (error) {
+                expect(error).equals('No value for channelKey.');
+            }
+        });
+    });
+
+    describe('adding new channel with undefined channelKey', () => {
+        it('should avoid add channel', async () => {
+            let channelKey;
+            try {
+                await channelRepository.createChannel(channelKey);
+            } catch (error) {
+                expect(error).equals('No value for channelKey.');
+            }
+        });
+    });
+
+    describe('adding new channel with white space channelKey', () => {
+        it('should avoid add channel', async () => {
+            const channelKey = ' ';
+            try {
+                await channelRepository.createChannel(channelKey);
+            } catch (error) {
+                expect(error).equals('No value for channelKey.');
+            }
+        });
+    });
+
     describe('adding new channel to empty repository', () => {
         it('should make repository to have elements', async () => {
             await channelRepository.createChannel('foo');
@@ -17,6 +62,50 @@ describe('channelRepository', () => {
                 await channelRepository.createChannel('comics');
             } catch (error) {
                 expect(error).equals('Channel comics already exist.');
+            }
+        });
+    });
+
+    describe('adding a user with empty userId', () => {
+        it('should avoid insert user', async () => {
+            const userId = '';
+            try {
+                await channelRepository.addUser('comics', userId);
+            } catch (error) {
+                expect(error).equals('No value for channelKey or userId');
+            }
+        });
+    });
+
+    describe('adding a user with null userId', () => {
+        it('should avoid insert user', async () => {
+            const userId = null;
+            try {
+                await channelRepository.addUser('comics', userId);
+            } catch (error) {
+                expect(error).equals('No value for channelKey or userId');
+            }
+        });
+    });
+
+    describe('adding a user with undefined userId', () => {
+        it('should avoid insert user', async () => {
+            let userId;
+            try {
+                await channelRepository.addUser('comics', userId);
+            } catch (error) {
+                expect(error).equals('No value for channelKey or userId');
+            }
+        });
+    });
+
+    describe('adding a user with white space userId', () => {
+        it('should avoid insert user', async () => {
+            const userId = ' ';
+            try {
+                await channelRepository.addUser('comics', userId);
+            } catch (error) {
+                expect(error).equals('No value for channelKey or userId');
             }
         });
     });
