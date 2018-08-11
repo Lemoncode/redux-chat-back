@@ -12,12 +12,12 @@ module.exports = (repository) => (
                 next(error);
             }
         })
-        .post('/:roomId/user', async (req, res, next) => {
+        .post('/canenrol/:roomId/user', async (req, res, next) => { 
             try {
                 const { roomId } = req.params;
                 const { userId } = req.body;
-                await repository.addUser(roomId, userId);
-                res.json(200);
+                const exists = await repository.existUser(roomId, userId);
+                res.json(!exists);
             } catch (error) {
                 next(error);
             }

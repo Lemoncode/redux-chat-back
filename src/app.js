@@ -3,17 +3,21 @@ const express = require('express'),
   bodyParser = require('body-parser'),
   cors = require('cors'),
   repository = require('./repositories/channelRepository'),
-  cors = require('cors')
-  random = require('./namespaces/random');
+  genericNamespace = require('./namespaces');
 
-  const { channels } = require('./config');
+const { channels } = require('./config');
 
-// TODO: Use environment variables
-const initiailizeChannels = async (channels, repository) => {
+const initiailizeChannels = async (io, channels, repository) => {
   await Promise.all(
     channels.map(c => repository.createChannel(c))
   );
-}; 
+  channels.map(c => ({
+    io,
+    channel: c,
+    repository
+  }))
+  .forEach(i => genericNamespace(i));
+};
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -24,7 +28,6 @@ app.use('/api/rooms', roomsRouter);
 
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
-random(io);
 server.listen(3000);
 // TODO: Create env variable to initialize repository in memomory
-initiailizeChannels(channels, repository);
+initiailizeChannels(io, channels, repository);

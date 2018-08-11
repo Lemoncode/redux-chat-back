@@ -1,3 +1,4 @@
 exports.channels = [
-    'random'
+    'random',
+    'pullrequests',
 ];

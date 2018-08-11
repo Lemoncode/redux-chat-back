@@ -10,7 +10,20 @@
 </head>
 
 <body>
-    <!-- Use css grid -->
+    <!-- TODO: Use css grid -->
+    <ul class="rooms-container" id="rooms">
+
+    </ul>
+
+    <span id="selectedroom"></span>
+    <form id="enrolmentform" class="enrolment">
+        <div class="enrolment__field">
+            <label for="user">Alias enrolment:</label>
+            <input class="elronment__field-input" id="userid" type="text">
+        </div>
+        <button id="enrolmentsubmit" class="enrolment__submit">Add to room</button>
+    </form>
+    
     <div class="messages-container" id="messages"></div>
     <div class="message-sender">
         <textarea class="message-sender__text" id="message"></textarea>
