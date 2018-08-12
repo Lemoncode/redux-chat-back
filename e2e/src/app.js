@@ -24,13 +24,19 @@ const socketEventsHandler = (socket) => {
         clearMessageText(textElement);
     });
     socket.on('messages', (msgs) => {
-        // TODO: Print messages.
+        // NOTE: Timestamp it's created on server not used on client yet.
         console.log('messages', msgs);
+        msgs.map((ms) => ({
+            user: ms.userId,
+            text: ms.text
+        })).forEach((mc) => {
+            addMessageText('messages', 'p', mc);
+        });
     });
 };
 
 const handleSelectedRoom = () => {
-    // TODO: Bear on mind to disconnect from socket channel.
+    // NOTE: Bear on mind to disconnect from socket channel.
     document.getElementById('rooms')
         .addEventListener('click', (evt) => {
             evt.stopPropagation();
@@ -38,10 +44,9 @@ const handleSelectedRoom = () => {
         });
 };
 
-// Use a promise instead a callback.
 const handleEnrolment = (callback) => {
-    // TODO: Check selected room.
-    // TODO: Check input user.
+    // NOTE: Check selected room.
+    // NOTE: Check input user.
     document.getElementById('enrolmentsubmit')
         .addEventListener('click', (evt) => {
             evt.stopPropagation();
@@ -55,7 +60,7 @@ const handleEnrolment = (callback) => {
                 if (canenrol) {
                     callback(null, room, userId);
                 } else {
-                    callback('can enrol to this channel');
+                    callback('Can not enrol to this channel');
                 }
             }
             ).catch(e => console.log(e));

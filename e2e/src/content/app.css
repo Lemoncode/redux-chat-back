@@ -2,6 +2,58 @@ body {
     font-family: Verdana, Tahoma, sans-serif;
 }
 
+/*
+    Main block 
+*/
+.chat {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: auto auto auto;
+    grid-column-gap: 16px;
+    grid-template-areas: "main main main rooms"
+                         "main main main rooms"
+                         "sender sender sender room-selector";
+}
+
+@media screen and (max-width: 800px) {
+    /* Here we can use a flex conatiner */
+    .chat {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto auto;
+        grid-template-areas: "main main"
+                             "main main"
+                             "sender sender";
+    }
+    
+    .chat__rooms {
+        display: none;
+    }
+
+    .chat__room-selector {
+        display: none;
+    }
+}
+
+/*
+    Block elements
+*/
+.chat__main {
+    grid-area: main;
+}
+
+.chat__rooms {
+    grid-area: rooms;
+}
+
+.chat__sender {
+    grid-area: sender;
+}
+
+.chat__room-selector {
+    grid-area: room-selector;
+}
+
 .enrolment {
     display: flex;
     justify-content: space-between;
@@ -22,11 +74,11 @@ body {
 }
 
 .enrolment__submit {
-    background-color:#11ffc9;
+    background-color:#0dd117;
 	-moz-border-radius:4px;
 	-webkit-border-radius:4px;
 	border-radius:4px;
-	border:2px solid #11ffc9;
+	border:2px solid #0dd117;
 	display:inline-block;
 	cursor:pointer;
 	color:#ffffff;
