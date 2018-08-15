@@ -3,11 +3,11 @@ const express = require('express'),
   bodyParser = require('body-parser'),
   cors = require('cors'),
   repository = require('./repositories/channelRepository'),
-  genericNamespace = require('./namespaces');
+  namespaceFactory = require('./namespaces');
 
 const { channels } = require('./config');
 
-const initiailizeChannels = async (io, channels, repository) => {
+const initializeChannels = async (io, channels, repository) => {
   await Promise.all(
     channels.map(c => repository.createChannel(c))
   );
@@ -16,7 +16,7 @@ const initiailizeChannels = async (io, channels, repository) => {
     channel: c,
     repository
   }))
-  .forEach(i => genericNamespace(i));
+  .forEach(i => namespaceFactory(i));
 };
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -30,4 +30,4 @@ const server = require('http').Server(app);
 const io = require('socket.io')(server);
 server.listen(3000);
 // TODO: Create env variable to initialize repository in memomory
-initiailizeChannels(io, channels, repository);
+initializeChannels(io, channels, repository);

@@ -11,8 +11,8 @@ export const fetchRooms = () => (
         })
 );
 
-export const canenrolRoom = (roomId, userId) => {
-    return fetch(`${apiUrl}/rooms/canenrol/${roomId}/user`, {
+export const canenrollRoom = (roomId, userId) => {
+    return fetch(`${apiUrl}/rooms/canenroll/${roomId}/user`, {
         method: 'POST',
         body: JSON.stringify({ 
             userId 

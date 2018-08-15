@@ -7,7 +7,7 @@ import {
     userInputValue,
     selectedRoomValue
 } from './services/uiHelpers';
-import { fetchRooms, canenrolRoom } from './services/api';
+import { fetchRooms, canenrollRoom } from './services/api';
 import { baseUrl } from './config';
 
 const socketEventsHandler = (socket) => {
@@ -53,14 +53,14 @@ const handleEnrolment = (callback) => {
             evt.preventDefault();
             const room = selectedRoomValue('selectedroom');
             const userId = userInputValue('userid');
-            canenrolRoom(
+            canenrollRoom(
                 room,
                 userId,
-            ).then((canenrol) => {
-                if (canenrol) {
+            ).then((canenroll) => {
+                if (canenroll) {
                     callback(null, room, userId);
                 } else {
-                    callback('Can not enrol to this channel');
+                    callback('Can not enroll to this channel');
                 }
             }
             ).catch(e => console.log(e));
@@ -79,7 +79,6 @@ const handleSender = (socket, room, user) => {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-    let socket;
     fetchRooms()
         .then((rooms) => {
             populateRooms(rooms, 'rooms');
@@ -96,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     query: `user=${userId}`
                 },
             };
-            socket = createSocket(socketParams);
+            const socket = createSocket(socketParams);
             socketEventsHandler(socket);
             handleSender(socket, room, userId);
         }

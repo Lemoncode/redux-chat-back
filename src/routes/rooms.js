@@ -12,7 +12,7 @@ module.exports = (repository) => (
                 next(error);
             }
         })
-        .post('/canenrol/:roomId/user', async (req, res, next) => { 
+        .post('/canenroll/:roomId/user', async (req, res, next) => { 
             try {
                 const { roomId } = req.params;
                 const { userId } = req.body;
