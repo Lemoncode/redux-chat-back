@@ -27,8 +27,8 @@ module.exports = ({ io, channel, repository }) => {
             };
 
             repository.addMessage(serverMessage)
-                .then(() => {
-                    namespace.emit('message', message);
+                .then((result) => {
+                    namespace.emit('message', result);
                 })
                 .catch(e => console.log(e));
         });

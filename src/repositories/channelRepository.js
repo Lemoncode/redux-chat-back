@@ -81,11 +81,12 @@ exports.addMessage = async ({ channelKey, userId, text }) => {
     const canAddMessageResolved = await canAddMessage(channelKey, userId)
     return new Promise((resolve, reject) => {
         if (canAddMessageResolved) {
+            const timestampedMessage = new Message(userId, text, Date.now());
             channels[channelKey].messages = [
                 ...channels[channelKey].messages,
-                new Message(userId, text, Date.now())
+                timestampedMessage,
             ];
-            resolve();
+            resolve(timestampedMessage);
         }
         reject(`Channel: ${channelKey} or User: ${userId} does not exist.`);
     });
